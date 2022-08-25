@@ -2,6 +2,7 @@ import React, { useEffect } from "react";
 import styled from "styled-components";
 import { Button } from "../components/button";
 import { usePopup } from "../contexts/popup";
+import { Wallet } from "../services/wallet";
 
 export const Homepage = () => {
   const { showPopup } = usePopup()
@@ -12,8 +13,13 @@ export const Homepage = () => {
       text2: "test",
       onAllow: () => console.log("allow")
     })
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  },[])
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  function walletLogin() {
+    let wallet = new Wallet();
+    wallet.login();
+  }
 
   return (
     <Wrapper>
@@ -24,7 +30,7 @@ export const Homepage = () => {
       <LoginOptions>
         <Option>
           <Icon src={require('../assets/user.png')}></Icon>
-          <Button>Sou Paciente</Button>
+          <Button onClick={walletLogin}>Sou Paciente</Button>
         </Option>
         <Divider></Divider>
         <Option>
