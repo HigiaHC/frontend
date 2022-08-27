@@ -1,24 +1,39 @@
 import React, { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { Button } from "../components/button";
-import { usePopup } from "../contexts/popup";
-import { Wallet } from "../services/wallet";
+// import { usePopup } from "../contexts/popup";
+import { useWallet } from "../contexts/wallet";
 
 export const Homepage = () => {
-  const { showPopup } = usePopup()
+  const navigate = useNavigate();
+
+  // const { showPopup } = usePopup();
+  const { wallet } = useWallet();
 
   useEffect(() => {
-    showPopup({
-      text1: "Hello",
-      text2: "test",
-      onAllow: () => console.log("allow")
-    })
+    // showPopup({
+    //   text1: "Hello",
+    //   text2: "test",
+    //   onAllow: () => console.log("allow")
+    // }) 
+    checkWalletLogin();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  function walletLogin() {
-    let wallet = new Wallet();
-    wallet.login();
+  async function checkWalletLogin() {
+    if (await wallet.isLogged()) {
+      navigate('/resources');
+    }
+  }
+
+  async function walletLogin() {
+    if (await wallet.login())
+      navigate('/resources');
+  }
+
+  function getAccountInfo() {
+    alert(wallet.getAccount());
   }
 
   return (
@@ -35,7 +50,7 @@ export const Homepage = () => {
         <Divider></Divider>
         <Option>
           <Icon src={require('../assets/doctor.png')}></Icon>
-          <Button>Sou Profissional</Button>
+          <Button onClick={getAccountInfo}>Sou Profissional</Button>
         </Option>
       </LoginOptions>
     </Wrapper>
