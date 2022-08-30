@@ -1,22 +1,22 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 
 import { Button } from "./button";
 import { Input } from "./input";
 
-export const Popup = ({ text1, text2, onReject, onAllow, hasInput, placeholder, onChange, value }) => {
+export const Popup = ({ text1, text2, onReject, onAllow, hasInput, onChange }) => {
+  const [inputValue, setInputValue] = useState('');
+
+  useEffect(() => {
+    onChange(inputValue);
+  }, [inputValue]);
+
   return (
     <Wrapper>
       <Text>{text1}</Text>
       <Text>{text2}</Text>
 
-      {hasInput ?
-        <Input
-          placeholder={placeholder}
-          onChange={onChange}
-          value={value}
-          type='text'
-        ></Input> : <></>}
+      {hasInput && <Input value={inputValue} onChange={(event) => setInputValue(event.target.value)}></Input>}
 
       <ButtonGroup>
         <Button outline onClick={onReject}>Reject</Button>

@@ -1,4 +1,4 @@
-import React, { useContext, createContext, useState } from "react";
+import React, { useContext, createContext, useState, useCallback } from "react";
 import { Popup } from "../components/popup";
 
 const PopupContext = createContext({
@@ -12,17 +12,17 @@ export const PopupProvider = ({ children }) => {
     text2: "",
     input: "",
     onAllow: () => { },
-    onReject: () => { },
+    hasInput: false
   })
 
-  const handleShow = ({ text1, text2, input, onAllow, onReject = handleHide, hasInput = false, placeholder = '', onChange = () => { }, value = '' }) => {
+  const handleShow = ({ text1, text2, input, onAllow, hasInput = false, onChange = () => { } }) => {
     setIsVisible(true)
-    setPopupContent({ text1, text2, input, onAllow, onReject, hasInput, placeholder, onChange, value })
+    setPopupContent({ text1, text2, input, onAllow, hasInput, onChange })
   }
 
   const handleHide = () => {
     setIsVisible(false)
-    setPopupContent({ text1: "", text2: "", onAllow: () => { }, onReject: () => { }, hasInput: false, placeholder: '', onChange: () => { }, value: '' })
+    setPopupContent({ text1: "", text2: "", onAllow: () => { }, hasInput: false, onChange: () => { } })
   }
 
   return (
@@ -33,12 +33,10 @@ export const PopupProvider = ({ children }) => {
         <Popup
           text1={popupContent.text1}
           text2={popupContent.text2}
-          hasInput={popupContent.hasInput}
-          placeholder={popupContent.placeholder}
-          onChange={popupContent.onChange}
-          value={popupContent.value}
           onAllow={popupContent.onAllow}
-          onReject={popupContent.onReject}>
+          onReject={handleHide}
+          hasInput={popupContent.hasInput}
+          onChange={popupContent.onChange}>
         </Popup>}
       {children}
     </PopupContext.Provider>

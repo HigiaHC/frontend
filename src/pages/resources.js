@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { Button } from "../components/button";
@@ -18,51 +18,41 @@ export const Resources = () => {
     const { wallet } = useWallet();
     const { showPopup } = usePopup();
 
-    useEffect(() => {
-        checkWalletLogin();
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
-
-    async function checkWalletLogin() {
-        if (!await wallet.isLogged(true, web3)) {
-            navigate('/');
-        }
-        checkUser(wallet.getAccount());
-    }
-
-    const handleChange = event => {
-        setNewName(event.target.value);
+    const addUser = useCallback((address) => {
         console.log(newName);
+        // await web3.contract.methods.addUser(newName).send({
+        //     from: address
+        // });
+    }, [newName]);
 
-        console.log('value is:', event.target.value);
-    };
-
-    async function checkUser(address) {
+    const checkUser = useCallback(async (address) => {
         let user = await web3.contract.methods.getUser().call({
             from: address
         });
-        setName('teste');
+
         if (!user.instanced) {
             showPopup({
                 text1: "Creating new account!",
                 text2: "Insert account name:",
-                onReject: () => navigate('/'),
-                onAllow: async () => await addUser(address),
+                onAllow: () => addUser(address),
                 hasInput: true,
-                placeholder: 'Name',
-                onChange: handleChange,
-                value: newName
+                onChange: (value) => setNewName(value)
             });
         }
         setName(user.name);
-    }
+    }, [newName]);
 
-    async function addUser(address) {
-        console.log(newName);
-        await web3.contract.methods.addUser(newName).send({
-            from: address
-        });
-    }
+    useEffect(() => {
+        const checkWalletLogin = async () => {
+            if (!await wallet.isLogged(true, web3)) {
+                navigate('/');
+            }
+            checkUser(wallet.getAccount());
+        }
+        checkWalletLogin();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [checkUser]);
+    // addUser('jdskjdf');
 
 
     return (
