@@ -16,13 +16,12 @@ export const Resources = () => {
 
     const { web3 } = useWeb3();
     const { wallet } = useWallet();
-    const { showPopup } = usePopup();
+    const { showPopup, handleHide } = usePopup();
 
-    const addUser = useCallback((address) => {
-        console.log(newName);
-        // await web3.contract.methods.addUser(newName).send({
-        //     from: address
-        // });
+    const addUser = useCallback(async (address) => {
+        await web3.contract.methods.addUser(newName).send({
+            from: address
+        });
     }, [newName]);
 
     const checkUser = useCallback(async (address) => {
@@ -35,8 +34,10 @@ export const Resources = () => {
                 text1: "Creating new account!",
                 text2: "Insert account name:",
                 onAllow: () => addUser(address),
+                onReject: () => handleHide(),
                 hasInput: true,
-                onChange: (value) => setNewName(value)
+                onChange: (value) => setNewName(value),
+                placeholder: 'Name'
             });
         }
         setName(user.name);

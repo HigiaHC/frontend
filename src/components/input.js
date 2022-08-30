@@ -28,6 +28,9 @@ const InputField = styled.input`
   border-radius: 4px;
 
   padding: 8px 16px;
+
+  color: #000000;
+  font-weight: 400;
 `
 
 const Icon = styled.img`

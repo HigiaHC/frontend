@@ -4,7 +4,7 @@ import styled from "styled-components";
 import { Button } from "./button";
 import { Input } from "./input";
 
-export const Popup = ({ text1, text2, onReject, onAllow, hasInput, onChange }) => {
+export const Popup = ({ text1, text2, onReject, onAllow, hasInput, onChange, placeholder }) => {
   const [inputValue, setInputValue] = useState('');
 
   useEffect(() => {
@@ -12,22 +12,42 @@ export const Popup = ({ text1, text2, onReject, onAllow, hasInput, onChange }) =
   }, [inputValue]);
 
   return (
-    <Wrapper>
-      <Text>{text1}</Text>
-      <Text>{text2}</Text>
+    <>
+      <Backdrop></Backdrop>
+      <Wrapper>
+        <Text>{text1}</Text>
+        <Text>{text2}</Text>
 
-      {hasInput && <Input value={inputValue} onChange={(event) => setInputValue(event.target.value)}></Input>}
+        {hasInput && <Input value={inputValue} placeholder={placeholder} onChange={(event) => setInputValue(event.target.value)}></Input>}
 
-      <ButtonGroup>
-        <Button outline onClick={onReject}>Reject</Button>
-        <Button onClick={onAllow}>Allow</Button>
-      </ButtonGroup>
-    </Wrapper>
+        <ButtonGroup>
+          <Button outline onClick={onReject}>Reject</Button>
+          <Button onClick={onAllow}>Allow</Button>
+        </ButtonGroup>
+      </Wrapper>
+    </>
   )
 }
 
+const Backdrop = styled.div`
+  position: fixed;
+
+  margin: 0;
+  padding: 0;
+
+  top: 0;
+  left: 0;
+
+  width: 100vw;
+  height: 100vh;
+
+  z-index: 998;
+
+  background-color: #000000CC;
+`
+
 const Wrapper = styled.div`
-  position: absolute;
+  position: fixed;
 
   max-width: 480px;
 
