@@ -7,14 +7,14 @@ import { ResetCss } from "./styles/reset-css";
 
 function App() {
   return (
-    // <Web3Provider>
+    <Web3Provider>
       <WalletProvider>
         <PopupProvider>
           <Routes />
           <ResetCss />
         </PopupProvider>
       </WalletProvider>
-    // </Web3Provider>
+    </Web3Provider>
   );
 }
 

@@ -17,6 +17,7 @@ export const Homepage = () => {
     //   text2: "test",
     //   onAllow: () => console.log("allow")
     // }) 
+    console.log('asdfasdf');
     checkWalletLogin();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -40,16 +41,16 @@ export const Homepage = () => {
     <Wrapper>
       <Title>
         <Welcome>Bem-vindo à plataforma</Welcome>
-        <Logo src={require('../assets/logo.png')}></Logo>
+        <Logo src={require('../assets/logo.png').default}></Logo>
       </Title>
       <LoginOptions>
         <Option>
-          <Icon src={require('../assets/user.png')}></Icon>
+          <Icon src={require('../assets/user.png').default}></Icon>
           <Button onClick={walletLogin}>Sou Paciente</Button>
         </Option>
         <Divider></Divider>
         <Option>
-          <Icon src={require('../assets/doctor.png')}></Icon>
+          <Icon src={require('../assets/doctor.png').default}></Icon>
           <Button onClick={getAccountInfo}>Sou Profissional</Button>
         </Option>
       </LoginOptions>

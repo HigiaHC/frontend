@@ -3,9 +3,8 @@ class Wallet {
         this.account = '';
     }
 
-    async isLogged() {
+    async isLogged(checkUserExistance = false, web3 = undefined) {
         const accounts = await window.ethereum.request({ method: 'eth_accounts' });
-        console.log(accounts);
 
         if (accounts.length > 0) {
             this.#setAccountInfo(accounts);

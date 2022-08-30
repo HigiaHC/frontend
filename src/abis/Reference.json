@@ -17,8 +17,7 @@
         }
       ],
       "stateMutability": "view",
-      "type": "function",
-      "constant": true
+      "type": "function"
     },
     {
       "inputs": [
@@ -47,8 +46,7 @@
         }
       ],
       "stateMutability": "view",
-      "type": "function",
-      "constant": true
+      "type": "function"
     },
     {
       "inputs": [
@@ -72,8 +70,7 @@
         }
       ],
       "stateMutability": "view",
-      "type": "function",
-      "constant": true
+      "type": "function"
     },
     {
       "inputs": [
@@ -117,8 +114,7 @@
         }
       ],
       "stateMutability": "view",
-      "type": "function",
-      "constant": true
+      "type": "function"
     }
   ],
   "metadata": "{\"compiler\":{\"version\":\"0.8.16+commit.07a7930e\"},\"language\":\"Solidity\",\"output\":{\"abi\":[{\"inputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"constructor\"},{\"inputs\":[],\"name\":\"UNIX_DAY\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"name\":\"accounts\",\"outputs\":[{\"internalType\":\"address\",\"name\":\"id\",\"type\":\"address\"},{\"internalType\":\"string\",\"name\":\"name\",\"type\":\"string\"},{\"internalType\":\"uint256\",\"name\":\"accountType\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"string\",\"name\":\"_name\",\"type\":\"string\"}],\"name\":\"addUser\",\"outputs\":[{\"internalType\":\"bool\",\"name\":\"\",\"type\":\"bool\"}],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"getUser\",\"outputs\":[{\"components\":[{\"internalType\":\"string\",\"name\":\"name\",\"type\":\"string\"},{\"internalType\":\"bool\",\"name\":\"instanced\",\"type\":\"bool\"}],\"internalType\":\"struct Reference.Patient\",\"name\":\"\",\"type\":\"tuple\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"\",\"type\":\"address\"}],\"name\":\"patients\",\"outputs\":[{\"internalType\":\"string\",\"name\":\"name\",\"type\":\"string\"},{\"internalType\":\"bool\",\"name\":\"instanced\",\"type\":\"bool\"}],\"stateMutability\":\"view\",\"type\":\"function\"}],\"devdoc\":{\"kind\":\"dev\",\"methods\":{},\"version\":1},\"userdoc\":{\"kind\":\"user\",\"methods\":{},\"version\":1}},\"settings\":{\"compilationTarget\":{\"project:/src/contracts/reference.sol\":\"Reference\"},\"evmVersion\":\"london\",\"libraries\":{},\"metadata\":{\"bytecodeHash\":\"ipfs\"},\"optimizer\":{\"enabled\":false,\"runs\":200},\"remappings\":[]},\"sources\":{\"project:/src/contracts/reference.sol\":{\"keccak256\":\"0xa0af91cb6eb039c62d438ace0907aa34bd73c50f2083bcdd96402d2c939db24a\",\"license\":\"GPL-3.0\",\"urls\":[\"bzz-raw://6116bb4f8e510e1e7bafd473c969d6f06a37bd4aa2797dbbefdfc9c1049ecf44\",\"dweb:/ipfs/QmcpsoSZxUpr4zRueXz3r1txVVK9GoUjVi3YMtqHAKEyA8\"]},\"project:/src/utils/Utilities.sol\":{\"keccak256\":\"0x8b8869ceacaa3ffc2c7b4c0c4ffe80e0b5a498f252a74f3b1868e854942f4c41\",\"license\":\"GPL-3.0\",\"urls\":[\"bzz-raw://be67b61b9c436adfb24ed7393603a835baf0e8b13b13027686da194cfe7549ea\",\"dweb:/ipfs/QmQzmwizY59yTHif1BNU6THUwfAftsacYz4hjQfHSz2WBQ\"]}},\"version\":1}",
@@ -9471,8 +9467,8 @@
     "5777": {
       "events": {},
       "links": {},
-      "address": "0x9fBA376c6d9F284C3dFB42199AC5E45Ca383a108",
-      "transactionHash": "0x7179286ad46f1a67a35976d5b844a8539fc43274e3d8edbaa6dd3c87f4215376"
+      "address": "0x1DFc20e0291c7fCf7c7bb5e7C60608AD03c5347B",
+      "transactionHash": "0xee13b2026342983765d40fb581a9f76bd22d9992684aa4358ff1e2f652f808bc"
     },
     "1660499265690": {
       "events": {},
@@ -9488,8 +9484,7 @@
     }
   },
   "schemaVersion": "3.4.9",
-  "updatedAt": "2022-08-27T21:22:10.344Z",
-  "networkType": "ethereum",
+  "updatedAt": "2022-08-28T10:38:21.385Z",
   "devdoc": {
     "kind": "dev",
     "methods": {},

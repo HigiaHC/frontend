@@ -2,15 +2,15 @@ import React from "react";
 import styled from "styled-components";
 import { Button } from "./button";
 
-export const Header = () => {
+export const Header = ({ name }) => {
   return (
     <Wrapper>
       <Center>
-        <Logo src={require('../assets/logo.png')}></Logo>
+        <Logo src={require('../assets/logo.png').default}></Logo>
         <Menu>
           <MenuItem>
-            <MenuIcon src={require('../assets/login.png')}></MenuIcon>
-            Burno
+            <MenuIcon src={require('../assets/login.png').default}></MenuIcon>
+            {name}
           </MenuItem>
           <Button fullWidth={false}>Logout</Button>
         </Menu>
@@ -31,6 +31,7 @@ const Wrapper = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
+  z-index: 999;
 `
 
 const Center = styled.div`
