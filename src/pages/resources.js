@@ -22,6 +22,7 @@ export const Resources = () => {
         await web3.contract.methods.addUser(newName).send({
             from: address
         });
+        navigate('/')
     }, [newName]);
 
     const checkUser = useCallback(async (address) => {
@@ -53,7 +54,6 @@ export const Resources = () => {
         checkWalletLogin();
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [checkUser]);
-    // addUser('jdskjdf');
 
 
     return (
