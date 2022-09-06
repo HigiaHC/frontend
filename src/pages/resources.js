@@ -22,20 +22,27 @@ export const Resources = () => {
         await web3.contract.methods.addUser(newName).send({
             from: address
         });
-        navigate('/')
+        navigate('/resources');
     }, [newName]);
+
+    const handleReject = () => {
+        alert('You need to choose a name');
+        navigate('/resources');
+    }
 
     const checkUser = useCallback(async (address) => {
         let user = await web3.contract.methods.getUser().call({
             from: address
         });
 
+        console.log(user);
+
         if (!user.instanced) {
             showPopup({
                 text1: "Creating new account!",
                 text2: "Insert account name:",
                 onAllow: () => addUser(address),
-                onReject: () => handleHide(),
+                onReject: () => handleReject(),
                 hasInput: true,
                 onChange: (value) => setNewName(value),
                 placeholder: 'Name'
@@ -43,6 +50,14 @@ export const Resources = () => {
         }
         setName(user.name);
     }, [newName]);
+
+    const loadReferences = async (address) => {
+        let references = await web3.contract.methods.listReferences().call({
+            from: address
+        });
+
+        console.log(references);
+    }
 
     useEffect(() => {
         const checkWalletLogin = async () => {
@@ -53,7 +68,10 @@ export const Resources = () => {
         }
         checkWalletLogin();
         // eslint-disable-next-line react-hooks/exhaustive-deps
+
+        loadReferences(wallet.getAccount());
     }, [checkUser]);
+    // addUser('jdskjdf');
 
 
     return (

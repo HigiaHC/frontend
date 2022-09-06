@@ -1,5 +1,5 @@
 import Web3 from 'web3';
-import configuration from '../abis/Reference.json';
+import configuration from '../abis/References.json';
 
 export class Web3Service {
     constructor() {
