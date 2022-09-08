@@ -66,11 +66,11 @@ export const Resources = () => {
                 navigate('/');
             }
             checkUser(wallet.getAccount());
+            loadReferences(wallet.getAccount());
         }
         checkWalletLogin();
         // eslint-disable-next-line react-hooks/exhaustive-deps
 
-        loadReferences(wallet.getAccount());
     }, [checkUser]);
     // addUser('jdskjdf');
 
