@@ -13,6 +13,7 @@ export const Resources = () => {
     const navigate = useNavigate();
     const [name, setName] = useState('');
     const [newName, setNewName] = useState('');
+    const [references, setReferences] = useState({});
 
     const { web3 } = useWeb3();
     const { wallet } = useWallet();
@@ -81,7 +82,7 @@ export const Resources = () => {
                 <Center>
                     <Actions>
                         <Input img={require('../assets/search.png').default} placeholder="Search..."></Input>
-                        <Button fullWidth={false}>Create Resource</Button>
+                        <Button fullWidth={false} onClick={() => navigate('/new')}>Create Resource</Button>
                     </Actions>
                     <List>
                         <ListItem date="22/08/2022" title="Resource 1" subtitle="Type: Patient"></ListItem>

@@ -18,7 +18,7 @@ export const Popup = ({ text1, text2, onReject, onAllow, hasInput, onChange, pla
         <Text>{text1}</Text>
         <Text>{text2}</Text>
 
-        {hasInput && <Input value={inputValue} placeholder={placeholder} onChange={(event) => setInputValue(event.target.value)}></Input>}
+        {hasInput && <Input value={inputValue} placeholder={placeholder} onChange={(event) => setInputValue(event)}></Input>}
 
         <ButtonGroup>
           <Button outline onClick={onReject}>Reject</Button>

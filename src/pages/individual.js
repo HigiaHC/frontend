@@ -16,10 +16,10 @@ export const Individual = () => {
 
   const json = {
     "resourceType": "Patient",
-    "id" : "75432",
-    "meta" : {
-      "versionId" : "12",
-      "lastUpdated" : "2022-05-21T15:43:30Z"
+    "id": "75432",
+    "meta": {
+      "versionId": "12",
+      "lastUpdated": "2022-05-21T15:43:30Z"
     },
     "text": {
       "status": "generated",
@@ -53,7 +53,7 @@ export const Individual = () => {
       <Header></Header>
       <Wrapper>
         <Center>
-          <Input placeholder="Name" value={formData.name} onChange={(e) => setFormData(prev => ({ ...prev, name: e.target.value }))}></Input>
+          <Input placeholder="Name" value={formData.name} onChange={(e) => setFormData(prev => ({ ...prev, name: e }))}></Input>
           <ReactJson src={json} theme="monokai" style={{ padding: 16, borderRadius: 8, maxHeight: 640, overflowY: 'auto' }} />
           <ButtonWrapper>
             <Button onClick={handleSubmit} fullWidth={false}>Create Resource</Button>

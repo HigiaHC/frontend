@@ -1,11 +1,16 @@
 import React from "react";
 import styled from "styled-components";
 
-export const Input = ({ label, placeholder, type, value, onChange, img, onClick }) => {
+export const Input = ({ label, placeholder, type, value, onChange, img, onClick, mask = v => v }) => {
+  const onChangeValue = (e) => {
+    const maskedValue = mask(e.target.value);
+    onChange(maskedValue);
+  }
+
   return (
     <Wrapper>
       {label && <Label>{label}</Label>}
-      <InputField placeholder={placeholder} type={type} value={value} onChange={onChange}></InputField>
+      <InputField placeholder={placeholder} type={type} value={value} onChange={onChangeValue}></InputField>
       {img && <Icon onClick={onClick} src={img}></Icon>}
     </Wrapper>
   )
