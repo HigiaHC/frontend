@@ -9,13 +9,14 @@ import { Input } from "../components/input";
 import { dateMask, phoneMask } from "../utils/mask";
 import { useWeb3 } from "../contexts/web3";
 import { useWallet } from "../contexts/wallet";
+const uuid = require('uuid');
 
 export const NewReference = () => {
   const navigate = useNavigate();
   const [name, setName] = useState('');
   const [formData, setFormData] = useState({
     name: "",
-    type: ""
+    type: "Patient"
   })
 
   const [patientData, setPatientData] = useState({
@@ -31,7 +32,7 @@ export const NewReference = () => {
   const { web3 } = useWeb3();
   const { wallet } = useWallet();
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     console.log(formData)
     console.log(patientData)
 
@@ -40,8 +41,12 @@ export const NewReference = () => {
       return;
     }
 
+    console.log(wallet.getAccount())
     if (formData.type === 'Patient') {
-
+      await web3.contract.methods.createReference(uuid.v4(), formData.name, formData.type).send({
+        from: wallet.getAccount()
+      });
+      navigate('/resources');
     }
   }
 
@@ -76,28 +81,28 @@ export const NewReference = () => {
       <Wrapper>
         <Center>
           <Input placeholder="Resource Name" value={formData.name} onChange={(e) => setFormData(prev => ({ ...prev, name: e }))}></Input>
-          <SelectWrapper>
-            <Select placeholder="Select Resource type" options={[
+          {/* <SelectWrapper>
+            <Select placeholder="Select Resource type..." options={[
               { value: 'Patient', label: 'Patient' },
               { value: 'Observation', label: 'Observation' }
             ]} onChange={({ value }) => setFormData(prev => ({ ...prev, type: value }))} />
-          </SelectWrapper>
+          </SelectWrapper> */}
           <hr></hr>
           {formData.type === 'Patient' && <>
             <Input placeholder="Email" value={patientData.email} onChange={(e) => setPatientData(prev => ({ ...prev, email: e }))}></Input>
             <Input placeholder="Phone" value={patientData.phone} onChange={(e) => setPatientData(prev => ({ ...prev, phone: e }))} mask={phoneMask}></Input>
             <Input placeholder="Address" value={patientData.address} onChange={(e) => setPatientData(prev => ({ ...prev, address: e }))}></Input>
             <Input placeholder="Birth Date" value={patientData.birthDate} onChange={(e) => setPatientData(prev => ({ ...prev, birthDate: e }))} mask={dateMask}></Input>
-            <SelectWrapper>
+            {/* <SelectWrapper>
               <Select placeholder="Select gender..." options={[
                 { value: 'Male', label: 'Male' },
                 { value: 'Female', label: 'Female' },
                 { value: 'Other', label: 'Other' }
               ]} onChange={({ value }) => setPatientData(prev => ({ ...prev, gender: value }))} />
-            </SelectWrapper>
+            </SelectWrapper> */}
           </>}
           <ButtonWrapper>
-            <Button onClick={handleSubmit} fullWidth={false}>Create Resource</Button>
+            <Button onClick={async () => handleSubmit()} fullWidth={false}>Create Resource</Button>
           </ButtonWrapper>
         </Center>
       </Wrapper>
@@ -115,6 +120,7 @@ const SelectWrapper = styled.div`
     font-weight: 400;
   }
 `
+
 
 const Wrapper = styled.div`
   width: 100%;

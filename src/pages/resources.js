@@ -8,12 +8,13 @@ import { ListItem } from "../components/list-item";
 import { useWeb3 } from "../contexts/web3";
 import { useWallet } from "../contexts/wallet";
 import { usePopup } from "../contexts/popup";
+import { unixToDate } from "../utils/date";
 
 export const Resources = () => {
     const navigate = useNavigate();
     const [name, setName] = useState('');
     const [newName, setNewName] = useState('');
-    const [references, setReferences] = useState({});
+    const [references, setReferences] = useState([]);
 
     const { web3 } = useWeb3();
     const { wallet } = useWallet();
@@ -57,7 +58,7 @@ export const Resources = () => {
             from: address
         });
 
-        console.log(references);
+        setReferences(references);
     }
 
     useEffect(() => {
@@ -85,6 +86,10 @@ export const Resources = () => {
                         <Button fullWidth={false} onClick={() => navigate('/new')}>Create Resource</Button>
                     </Actions>
                     <List>
+                        {references.map(reference =>
+                            <ListItem key={reference.id} date={unixToDate(reference.date)} title={reference.name} subtitle={`Type: ${reference.resourceType}`}></ListItem>
+                        )}
+                        {/* <ListItem date="22/08/2022" title="Resource 1" subtitle="Type: Patient"></ListItem>
                         <ListItem date="22/08/2022" title="Resource 1" subtitle="Type: Patient"></ListItem>
                         <ListItem date="22/08/2022" title="Resource 1" subtitle="Type: Patient"></ListItem>
                         <ListItem date="22/08/2022" title="Resource 1" subtitle="Type: Patient"></ListItem>
@@ -102,8 +107,7 @@ export const Resources = () => {
                         <ListItem date="22/08/2022" title="Resource 1" subtitle="Type: Patient"></ListItem>
                         <ListItem date="22/08/2022" title="Resource 1" subtitle="Type: Patient"></ListItem>
                         <ListItem date="22/08/2022" title="Resource 1" subtitle="Type: Patient"></ListItem>
-                        <ListItem date="22/08/2022" title="Resource 1" subtitle="Type: Patient"></ListItem>
-                        <ListItem date="22/08/2022" title="Resource 1" subtitle="Type: Patient"></ListItem>
+                        <ListItem date="22/08/2022" title="Resource 1" subtitle="Type: Patient"></ListItem> */}
                     </List>
                 </Center>
             </Wrapper>
