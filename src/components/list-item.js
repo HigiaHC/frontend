@@ -1,14 +1,14 @@
 import React from "react";
 import styled from "styled-components";
 
-export const ListItem = ({ date, title, subtitle }) => {
+export const ListItem = ({ side, title, subtitle, onClick }) => {
   return (
-    <Wrapper>
+    <Wrapper onClick={onClick}>
       <TextGroup>
         <Text>{title}</Text>
         <Text>{subtitle}</Text>
       </TextGroup>
-      <Text>Date: {date}</Text>
+      <Text>{side}</Text>
     </Wrapper>
   )
 }

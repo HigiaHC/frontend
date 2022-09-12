@@ -16,25 +16,25 @@ export const Listing = () => {
             <Button fullWidth={false}>Create Resource</Button>
           </Actions>
           <List>
-            <ListItem date="22/08/2022" title="Resource 1" subtitle="Type: Patient"></ListItem>
-            <ListItem date="22/08/2022" title="Resource 1" subtitle="Type: Patient"></ListItem>
-            <ListItem date="22/08/2022" title="Resource 1" subtitle="Type: Patient"></ListItem>
-            <ListItem date="22/08/2022" title="Resource 1" subtitle="Type: Patient"></ListItem>
-            <ListItem date="22/08/2022" title="Resource 1" subtitle="Type: Patient"></ListItem>
-            <ListItem date="22/08/2022" title="Resource 1" subtitle="Type: Patient"></ListItem>
-            <ListItem date="22/08/2022" title="Resource 1" subtitle="Type: Patient"></ListItem>
-            <ListItem date="22/08/2022" title="Resource 1" subtitle="Type: Patient"></ListItem>
-            <ListItem date="22/08/2022" title="Resource 1" subtitle="Type: Patient"></ListItem>
-            <ListItem date="22/08/2022" title="Resource 1" subtitle="Type: Patient"></ListItem>
-            <ListItem date="22/08/2022" title="Resource 1" subtitle="Type: Patient"></ListItem>
-            <ListItem date="22/08/2022" title="Resource 1" subtitle="Type: Patient"></ListItem>
-            <ListItem date="22/08/2022" title="Resource 1" subtitle="Type: Patient"></ListItem>
-            <ListItem date="22/08/2022" title="Resource 1" subtitle="Type: Patient"></ListItem>
-            <ListItem date="22/08/2022" title="Resource 1" subtitle="Type: Patient"></ListItem>
-            <ListItem date="22/08/2022" title="Resource 1" subtitle="Type: Patient"></ListItem>
-            <ListItem date="22/08/2022" title="Resource 1" subtitle="Type: Patient"></ListItem>
-            <ListItem date="22/08/2022" title="Resource 1" subtitle="Type: Patient"></ListItem>
-            <ListItem date="22/08/2022" title="Resource 1" subtitle="Type: Patient"></ListItem>
+            <ListItem side="22/08/2022" title="Resource 1" subtitle="Type: Patient"></ListItem>
+            <ListItem side="22/08/2022" title="Resource 1" subtitle="Type: Patient"></ListItem>
+            <ListItem side="22/08/2022" title="Resource 1" subtitle="Type: Patient"></ListItem>
+            <ListItem side="22/08/2022" title="Resource 1" subtitle="Type: Patient"></ListItem>
+            <ListItem side="22/08/2022" title="Resource 1" subtitle="Type: Patient"></ListItem>
+            <ListItem side="22/08/2022" title="Resource 1" subtitle="Type: Patient"></ListItem>
+            <ListItem side="22/08/2022" title="Resource 1" subtitle="Type: Patient"></ListItem>
+            <ListItem side="22/08/2022" title="Resource 1" subtitle="Type: Patient"></ListItem>
+            <ListItem side="22/08/2022" title="Resource 1" subtitle="Type: Patient"></ListItem>
+            <ListItem side="22/08/2022" title="Resource 1" subtitle="Type: Patient"></ListItem>
+            <ListItem side="22/08/2022" title="Resource 1" subtitle="Type: Patient"></ListItem>
+            <ListItem side="22/08/2022" title="Resource 1" subtitle="Type: Patient"></ListItem>
+            <ListItem side="22/08/2022" title="Resource 1" subtitle="Type: Patient"></ListItem>
+            <ListItem side="22/08/2022" title="Resource 1" subtitle="Type: Patient"></ListItem>
+            <ListItem side="22/08/2022" title="Resource 1" subtitle="Type: Patient"></ListItem>
+            <ListItem side="22/08/2022" title="Resource 1" subtitle="Type: Patient"></ListItem>
+            <ListItem side="22/08/2022" title="Resource 1" subtitle="Type: Patient"></ListItem>
+            <ListItem side="22/08/2022" title="Resource 1" subtitle="Type: Patient"></ListItem>
+            <ListItem side="22/08/2022" title="Resource 1" subtitle="Type: Patient"></ListItem>
           </List>
         </Center>
       </Wrapper>

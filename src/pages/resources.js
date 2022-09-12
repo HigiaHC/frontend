@@ -37,8 +37,6 @@ export const Resources = () => {
             from: address
         });
 
-        console.log(user);
-
         if (!user.instanced) {
             showPopup({
                 text1: "Creating new account!",
@@ -87,7 +85,7 @@ export const Resources = () => {
                     </Actions>
                     <List>
                         {references.map(reference =>
-                            <ListItem key={reference.id} date={unixToDate(reference.date)} title={reference.name} subtitle={`Type: ${reference.resourceType}`}></ListItem>
+                            <ListItem key={reference.id} side={`Date: ${unixToDate(reference.date)}`} title={reference.name} subtitle={`Type: ${reference.resourceType}`}></ListItem>
                         )}
                         {/* <ListItem date="22/08/2022" title="Resource 1" subtitle="Type: Patient"></ListItem>
                         <ListItem date="22/08/2022" title="Resource 1" subtitle="Type: Patient"></ListItem>
