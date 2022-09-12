@@ -34,6 +34,7 @@ export const Requests = () => {
     const loadRequests = async (address) => {
         api.get(`requests/${address}`)
             .then(response => {
+                console.log(address)
                 setRequests(response.data)
             })
     }
@@ -72,10 +73,10 @@ export const Requests = () => {
         navigate('/requests');
     }
 
-    const openAnswerPopup = (id) => {
+    const openAnswerPopup = (id, name) => {
         showPopup({
-            text1: "Creating new account!",
-            text2: "Insert account name:",
+            text1: `${name} wants to read and write resources for you`,
+            text2: "Do you allow?",
             onAllow: () => handleAccept(id),
             onReject: () => handleReject(id),
             hasInput: false
@@ -97,8 +98,9 @@ export const Requests = () => {
                             <ListItem
                                 key={request.id}
                                 side={`Situation: ${request.accepted}`}
-                                title={request.name}
-                                onClick={() => openAnswerPopup(request.id)}></ListItem>
+                                title={request.description}
+                                subtitle={`From: ${request.name}`}
+                                onClick={() => openAnswerPopup(request.id, request.name)}></ListItem>
                         )}
                     </List>
                 </Center>

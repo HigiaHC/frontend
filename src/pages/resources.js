@@ -35,6 +35,8 @@ export const Resources = () => {
     const checkUser = useCallback(async (address) => {
         let user = await web3.contract.methods.getUser().call({
             from: address
+        }).catch(error => {
+
         });
 
         if (!user.instanced) {
