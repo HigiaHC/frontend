@@ -63,11 +63,17 @@ export const Requests = () => {
         navigate('/requests');
     }
 
-    const handleAccept = (id) => {
+    const handleAccept = async (id) => {
+        let token = uuid.v4();
         api.post('requests/answer', {
             id: id,
-            answer: true
+            answer: true,
+            token: token
         });
+
+        await web3.contract.methods.createToken(token).send({
+            from: wallet.getAccount()
+        })
 
         handleHide();
         navigate('/requests');
