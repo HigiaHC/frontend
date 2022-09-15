@@ -10,6 +10,7 @@ import { useWallet } from "../contexts/wallet";
 import { usePopup } from "../contexts/popup";
 import { unixToDate } from "../utils/date";
 import api from "../services/api";
+const uuid = require('uuid');
 
 export const Requests = () => {
     const navigate = useNavigate();
