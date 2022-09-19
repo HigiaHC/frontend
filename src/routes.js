@@ -7,6 +7,7 @@ import { Listing } from './pages/list';
 import { Resources } from './pages/resources';
 import { NewReference } from './pages/new-reference';
 import { Requests } from './pages/requests';
+import { ResourceRequests } from './pages/resource-requests';
 
 export const Routes = () => (
     <BrowserRouter basename="/">
@@ -17,6 +18,7 @@ export const Routes = () => (
             <Route path="/list" element={<Listing />} />
             <Route path="/ind" element={<Individual />} />
             <Route path="/requests" element={<Requests />} />
+            <Route path="/resource-requests" element={<ResourceRequests />} />
         </Switch>
     </BrowserRouter>
 );
