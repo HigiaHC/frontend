@@ -60,10 +60,10 @@ export const ResourceRequests = () => {
         navigate('/resource-requests');
     }
 
-    const handleAccept = async (id, description, type) => {
-        api.put(`resources/${id}`);
+    const handleAccept = async (id, description, type, from) => {
+        api.post(`resources/requests/created/${id}`);
 
-        await web3.contract.methods.createReference(uuid.v4(), description, type).send({
+        await web3.contract.methods.createReference(uuid.v4(), description, type, from).send({
             from: wallet.getAccount()
         });
 
@@ -75,7 +75,7 @@ export const ResourceRequests = () => {
         showPopup({
             text1: `${name} wants to create a resource for you`,
             text2: "Do you allow?",
-            onAllow: () => handleAccept(id, description, type),
+            onAllow: () => handleAccept(id, description, type, name),
             onReject: () => handleReject(id),
             hasInput: false
         });
@@ -98,7 +98,12 @@ export const ResourceRequests = () => {
                                 side={`From: ${request.from}`}
                                 title={request.description}
                                 subtitle={`Resource Type: ${request.type}`}
-                                onClick={() => openAnswerPopup(request.id, request.from, request.description, request.type)}></ListItem>
+                                onClick={() => openAnswerPopup(
+                                    request.id,
+                                    request.from,
+                                    request.description,
+                                    request.type
+                                )}></ListItem>
                         )}
                     </List>
                 </Center>

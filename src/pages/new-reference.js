@@ -41,7 +41,7 @@ export const NewReference = () => {
 
     console.log(wallet.getAccount())
     if (formData.type === 'Patient') {
-      await web3.contract.methods.createReference(uuid.v4(), formData.name, formData.type).send({
+      await web3.contract.methods.createReference(uuid.v4(), formData.name, formData.type, 'self').send({
         from: wallet.getAccount()
       });
       navigate('/resources');

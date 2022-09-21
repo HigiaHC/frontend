@@ -87,7 +87,11 @@ export const Resources = () => {
                     </Actions>
                     <List>
                         {references.map(reference =>
-                            <ListItem key={reference.id} side={`Date: ${unixToDate(reference.date)}`} title={reference.name} subtitle={`Type: ${reference.resourceType}`}></ListItem>
+                            <ListItem
+                                key={reference.id}
+                                side={`Date: ${unixToDate(reference.date)}`}
+                                title={`${reference.name} - By ${reference.from}`}
+                                subtitle={`Type: ${reference.resourceType}`}></ListItem>
                         )}
                         {/* <ListItem date="22/08/2022" title="Resource 1" subtitle="Type: Patient"></ListItem>
                         <ListItem date="22/08/2022" title="Resource 1" subtitle="Type: Patient"></ListItem>
