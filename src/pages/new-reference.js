@@ -34,8 +34,6 @@ export const NewReference = () => {
   const { wallet } = useWallet();
 
   const handleSubmit = async () => {
-    console.log(formData)
-    console.log(patientData)
 
     if (formData.name === "") {
       alert('Field cannot be empty');

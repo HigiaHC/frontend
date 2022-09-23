@@ -12,7 +12,7 @@ import { unixToDate } from "../utils/date";
 import api from "../services/api";
 const uuid = require('uuid');
 
-export const Requests = () => {
+export const ResourceRequests = () => {
     const navigate = useNavigate();
     const [name, setName] = useState('');
     const [requests, setRequests] = useState([]);
@@ -33,7 +33,7 @@ export const Requests = () => {
     }, []);
 
     const loadRequests = async (address) => {
-        api.get(`requests/${address}`)
+        api.get(`resources/requests/${address}`)
             .then(response => {
                 console.log(address)
                 setRequests(response.data)
@@ -52,39 +52,30 @@ export const Requests = () => {
         // eslint-disable-next-line react-hooks/exhaustive-deps
 
     }, [checkUser]);
-    // addUser('jdskjdf');
 
     const handleReject = (id) => {
-        api.post('requests/answer', {
-            id: id,
-            answer: false
-        });
+        api.put(`resources/${id}`);
 
         handleHide();
-        navigate('/requests');
+        navigate('/resource-requests');
     }
 
-    const handleAccept = async (id) => {
-        let token = uuid.v4();
-        api.post('requests/answer', {
-            id: id,
-            answer: true,
-            token: token
-        });
+    const handleAccept = async (id, description, type, from) => {
+        api.post(`resources/requests/created/${id}`);
 
-        await web3.contract.methods.createToken(token).send({
+        await web3.contract.methods.createReference(uuid.v4(), description, type, from).send({
             from: wallet.getAccount()
-        })
+        });
 
         handleHide();
-        navigate('/requests');
+        navigate('/resource-requests');
     }
 
-    const openAnswerPopup = (id, name) => {
+    const openAnswerPopup = (id, name, description, type) => {
         showPopup({
-            text1: `${name} wants to read and write resources for you`,
+            text1: `${name} wants to create a resource for you`,
             text2: "Do you allow?",
-            onAllow: () => handleAccept(id),
+            onAllow: () => handleAccept(id, description, type, name),
             onReject: () => handleReject(id),
             hasInput: false
         });
@@ -104,10 +95,15 @@ export const Requests = () => {
                         {requests.map(request =>
                             <ListItem
                                 key={request.id}
-                                side={`Situation: ${request.accepted}`}
+                                side={`From: ${request.from}`}
                                 title={request.description}
-                                subtitle={`From: ${request.name}`}
-                                onClick={() => openAnswerPopup(request.id, request.name)}></ListItem>
+                                subtitle={`Resource Type: ${request.type}`}
+                                onClick={() => openAnswerPopup(
+                                    request.id,
+                                    request.from,
+                                    request.description,
+                                    request.type
+                                )}></ListItem>
                         )}
                     </List>
                 </Center>

@@ -16,6 +16,7 @@ export const Header = ({ name }) => {
             {name}
           </MenuItem>
           <Button fullWidth={false} onClick={() => navigate('/requests')}>Sharing Requests</Button>
+          <Button fullWidth={false} onClick={() => navigate('/resource-requests')}>Resource Requests</Button>
         </Menu>
       </Center>
     </Wrapper>
