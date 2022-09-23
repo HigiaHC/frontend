@@ -9,7 +9,8 @@ import { Input } from "../components/input";
 import { dateMask, phoneMask } from "../utils/mask";
 import { useWeb3 } from "../contexts/web3";
 import { useWallet } from "../contexts/wallet";
-const uuid = require('uuid');
+import parser from "../utils/parser"
+import fhirApi from "../services/fhir";
 
 export const NewReference = () => {
   const navigate = useNavigate();
@@ -41,7 +42,11 @@ export const NewReference = () => {
 
     console.log(wallet.getAccount())
     if (formData.type === 'Patient') {
-      await web3.contract.methods.createReference(uuid.v4(), formData.name, formData.type, 'self').send({
+      const patient = parser.parsePatient(patientData);
+
+      const response = await fhirApi.post(`/${patient.resourceType}`, patient);
+  
+      await web3.contract.methods.createReference(response.data.id, formData.name, formData.type).send({
         from: wallet.getAccount()
       });
       navigate('/resources');
