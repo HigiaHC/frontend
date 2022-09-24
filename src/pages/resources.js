@@ -24,19 +24,18 @@ export const Resources = () => {
         await web3.contract.methods.addUser(newName).send({
             from: address
         });
-        navigate('/resources');
+        window.location.reload(false);
     }, [newName]);
 
     const handleReject = () => {
         alert('You need to choose a name');
-        navigate('/resources');
+        window.location.reload(false);
     }
 
     const checkUser = useCallback(async (address) => {
         let user = await web3.contract.methods.getUser().call({
             from: address
         }).catch(error => {
-
         });
 
         if (!user.instanced) {
@@ -76,7 +75,6 @@ export const Resources = () => {
         // eslint-disable-next-line react-hooks/exhaustive-deps
 
     }, [checkUser]);
-    // addUser('jdskjdf');
 
 
     return (
@@ -90,32 +88,13 @@ export const Resources = () => {
                     </Actions>
                     <List>
                         {references.map(reference =>
-                            <ListItem 
+                            <ListItem
                                 key={reference.id}
                                 onClick={() => (loadResource(reference.resourceType, reference.id))}
                                 side={`Date: ${unixToDate(reference.date)}`}
                                 title={reference.name}
                                 subtitle={`Type: ${reference.resourceType}`}></ListItem>
                         )}
-                        {/* <ListItem date="22/08/2022" title="Resource 1" subtitle="Type: Patient"></ListItem>
-                        <ListItem date="22/08/2022" title="Resource 1" subtitle="Type: Patient"></ListItem>
-                        <ListItem date="22/08/2022" title="Resource 1" subtitle="Type: Patient"></ListItem>
-                        <ListItem date="22/08/2022" title="Resource 1" subtitle="Type: Patient"></ListItem>
-                        <ListItem date="22/08/2022" title="Resource 1" subtitle="Type: Patient"></ListItem>
-                        <ListItem date="22/08/2022" title="Resource 1" subtitle="Type: Patient"></ListItem>
-                        <ListItem date="22/08/2022" title="Resource 1" subtitle="Type: Patient"></ListItem>
-                        <ListItem date="22/08/2022" title="Resource 1" subtitle="Type: Patient"></ListItem>
-                        <ListItem date="22/08/2022" title="Resource 1" subtitle="Type: Patient"></ListItem>
-                        <ListItem date="22/08/2022" title="Resource 1" subtitle="Type: Patient"></ListItem>
-                        <ListItem date="22/08/2022" title="Resource 1" subtitle="Type: Patient"></ListItem>
-                        <ListItem date="22/08/2022" title="Resource 1" subtitle="Type: Patient"></ListItem>
-                        <ListItem date="22/08/2022" title="Resource 1" subtitle="Type: Patient"></ListItem>
-                        <ListItem date="22/08/2022" title="Resource 1" subtitle="Type: Patient"></ListItem>
-                        <ListItem date="22/08/2022" title="Resource 1" subtitle="Type: Patient"></ListItem>
-                        <ListItem date="22/08/2022" title="Resource 1" subtitle="Type: Patient"></ListItem>
-                        <ListItem date="22/08/2022" title="Resource 1" subtitle="Type: Patient"></ListItem>
-                        <ListItem date="22/08/2022" title="Resource 1" subtitle="Type: Patient"></ListItem>
-                        <ListItem date="22/08/2022" title="Resource 1" subtitle="Type: Patient"></ListItem> */}
                     </List>
                 </Center>
             </Wrapper>

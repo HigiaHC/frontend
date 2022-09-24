@@ -8,16 +8,9 @@ import { useWallet } from "../contexts/wallet";
 export const Homepage = () => {
   const navigate = useNavigate();
 
-  // const { showPopup } = usePopup();
   const { wallet } = useWallet();
 
   useEffect(() => {
-    // showPopup({
-    //   text1: "Hello",
-    //   text2: "test",
-    //   onAllow: () => console.log("allow")
-    // }) 
-    console.log('asdfasdf');
     checkWalletLogin();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -33,10 +26,6 @@ export const Homepage = () => {
       navigate('/resources');
   }
 
-  function getAccountInfo() {
-    alert(wallet.getAccount());
-  }
-
   return (
     <Wrapper>
       <Title>
@@ -46,12 +35,7 @@ export const Homepage = () => {
       <LoginOptions>
         <Option>
           <Icon src={require('../assets/user.png').default}></Icon>
-          <Button onClick={walletLogin}>Sou Paciente</Button>
-        </Option>
-        <Divider></Divider>
-        <Option>
-          <Icon src={require('../assets/doctor.png').default}></Icon>
-          <Button onClick={getAccountInfo}>Sou Profissional</Button>
+          <Button onClick={walletLogin}>Entrar</Button>
         </Option>
       </LoginOptions>
     </Wrapper>

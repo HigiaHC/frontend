@@ -40,12 +40,11 @@ export const NewReference = () => {
       return;
     }
 
-    console.log(wallet.getAccount())
     if (formData.type === 'Patient') {
       const patient = parser.parsePatient(patientData);
 
       const response = await fhirApi.post(`/${patient.resourceType}`, patient);
-  
+
       await web3.contract.methods.createReference(response.data.id, formData.name, formData.type).send({
         from: wallet.getAccount()
       });
@@ -84,25 +83,21 @@ export const NewReference = () => {
       <Wrapper>
         <Center>
           <Input placeholder="Resource Name" value={formData.name} onChange={(e) => setFormData(prev => ({ ...prev, name: e }))}></Input>
-          {/* <SelectWrapper>
-            <Select placeholder="Select Resource type..." options={[
-              { value: 'Patient', label: 'Patient' },
-              { value: 'Observation', label: 'Observation' }
-            ]} onChange={({ value }) => setFormData(prev => ({ ...prev, type: value }))} />
-          </SelectWrapper> */}
+          <StyledSelect placeholder="Select Resource type..." options={[
+            { value: 'Patient', label: 'Patient' },
+            { value: 'Observation', label: 'Observation' }
+          ]} onChange={({ value }) => setFormData(prev => ({ ...prev, type: value }))} />
           <hr></hr>
           {formData.type === 'Patient' && <>
             <Input placeholder="Email" value={patientData.email} onChange={(e) => setPatientData(prev => ({ ...prev, email: e }))}></Input>
             <Input placeholder="Phone" value={patientData.phone} onChange={(e) => setPatientData(prev => ({ ...prev, phone: e }))} mask={phoneMask}></Input>
             <Input placeholder="Address" value={patientData.address} onChange={(e) => setPatientData(prev => ({ ...prev, address: e }))}></Input>
             <Input placeholder="Birth Date" value={patientData.birthDate} onChange={(e) => setPatientData(prev => ({ ...prev, birthDate: e }))} mask={dateMask}></Input>
-            {/* <SelectWrapper>
-              <Select placeholder="Select gender..." options={[
-                { value: 'Male', label: 'Male' },
-                { value: 'Female', label: 'Female' },
-                { value: 'Other', label: 'Other' }
-              ]} onChange={({ value }) => setPatientData(prev => ({ ...prev, gender: value }))} />
-            </SelectWrapper> */}
+            <StyledSelect placeholder="Select gender..." options={[
+              { value: 'Male', label: 'Male' },
+              { value: 'Female', label: 'Female' },
+              { value: 'Other', label: 'Other' }
+            ]} onChange={({ value }) => setPatientData(prev => ({ ...prev, gender: value }))} />
           </>}
           <ButtonWrapper>
             <Button onClick={async () => handleSubmit()} fullWidth={false}>Create Resource</Button>
@@ -113,17 +108,14 @@ export const NewReference = () => {
   )
 }
 
-const SelectWrapper = styled.div`
-  &${Select} {
-    width: 400px;
-    height: 32px;
+const StyledSelect = styled(Select)`
+  width: 400px;
+  height: 32px;
 
-  
-    color: #000000;
-    font-weight: 400;
-  }
+
+  color: #000000;
+  font-weight: 400;
 `
-
 
 const Wrapper = styled.div`
   width: 100%;
