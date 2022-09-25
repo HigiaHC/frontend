@@ -11,6 +11,7 @@ import { useWeb3 } from "../contexts/web3";
 import { useWallet } from "../contexts/wallet";
 import parser from "../utils/parser"
 import fhirApi from "../services/fhir";
+import { isPatientValid } from '../utils/resources/patientValidator';
 
 export const NewReference = () => {
   const navigate = useNavigate();
@@ -40,15 +41,24 @@ export const NewReference = () => {
       return;
     }
 
-    if (formData.type === 'Patient') {
-      const patient = parser.parsePatient(patientData);
+    switch (formData.type.toLowerCase()) {
+      case 'patient':
+        if (!isPatientValid(patientData))
+          alert('something is not working');
 
-      const response = await fhirApi.post(`/${patient.resourceType}`, patient);
+        const patient = parser.parsePatient(patientData);
+        const response = await fhirApi.post(`/${patient.resourceType}`, patient);
 
-      await web3.contract.methods.createReference(response.data.id, formData.name, formData.type).send({
-        from: wallet.getAccount()
-      });
-      navigate('/resources');
+        await web3.contract.methods.createReference(response.data.id, formData.name, formData.type).send({
+          from: wallet.getAccount()
+        });
+        navigate('/resources');
+
+        break;
+
+      default:
+        alert('resource type not defined');
+        break;
     }
   }
 
@@ -56,8 +66,6 @@ export const NewReference = () => {
     let user = await web3.contract.methods.getUser().call({
       from: address
     });
-
-    // console.log(user);
 
     if (!user.instanced) {
       navigate('/');
