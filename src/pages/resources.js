@@ -15,6 +15,7 @@ export const Resources = () => {
     const [name, setName] = useState('');
     const [newName, setNewName] = useState('');
     const [references, setReferences] = useState([]);
+    const [searchInput, setSearchInput] = useState("");
 
     const { web3 } = useWeb3();
     const { wallet } = useWallet();
@@ -78,18 +79,26 @@ export const Resources = () => {
     }, [checkUser]);
     // addUser('jdskjdf');
 
-
     return (
         <>
             <Header name={name}></Header>
             <Wrapper>
                 <Center>
                     <Actions>
-                        <Input img={require('../assets/search.png').default} placeholder="Search..."></Input>
+                        <Input img={require('../assets/search.png').default} placeholder="Search..."
+                        onChange={event => setSearchInput(event)}/>                      
                         <Button fullWidth={false} onClick={() => navigate('/new')}>Create Resource</Button>
                     </Actions>
                     <List>
-                        {references.map(reference =>
+                        {references.filter(reference =>{
+                            if(searchInput === "") {
+                                //if query is empty
+                                return reference;
+                              } else if (reference.name.toLowerCase().includes(searchInput.toLowerCase())) {
+                                //returns filtered array
+                                return reference;
+                              }
+                            }).map(reference =>
                             <ListItem 
                                 key={reference.id}
                                 onClick={() => (loadResource(reference.resourceType, reference.id))}
@@ -97,25 +106,6 @@ export const Resources = () => {
                                 title={reference.name}
                                 subtitle={`Type: ${reference.resourceType}`}></ListItem>
                         )}
-                        {/* <ListItem date="22/08/2022" title="Resource 1" subtitle="Type: Patient"></ListItem>
-                        <ListItem date="22/08/2022" title="Resource 1" subtitle="Type: Patient"></ListItem>
-                        <ListItem date="22/08/2022" title="Resource 1" subtitle="Type: Patient"></ListItem>
-                        <ListItem date="22/08/2022" title="Resource 1" subtitle="Type: Patient"></ListItem>
-                        <ListItem date="22/08/2022" title="Resource 1" subtitle="Type: Patient"></ListItem>
-                        <ListItem date="22/08/2022" title="Resource 1" subtitle="Type: Patient"></ListItem>
-                        <ListItem date="22/08/2022" title="Resource 1" subtitle="Type: Patient"></ListItem>
-                        <ListItem date="22/08/2022" title="Resource 1" subtitle="Type: Patient"></ListItem>
-                        <ListItem date="22/08/2022" title="Resource 1" subtitle="Type: Patient"></ListItem>
-                        <ListItem date="22/08/2022" title="Resource 1" subtitle="Type: Patient"></ListItem>
-                        <ListItem date="22/08/2022" title="Resource 1" subtitle="Type: Patient"></ListItem>
-                        <ListItem date="22/08/2022" title="Resource 1" subtitle="Type: Patient"></ListItem>
-                        <ListItem date="22/08/2022" title="Resource 1" subtitle="Type: Patient"></ListItem>
-                        <ListItem date="22/08/2022" title="Resource 1" subtitle="Type: Patient"></ListItem>
-                        <ListItem date="22/08/2022" title="Resource 1" subtitle="Type: Patient"></ListItem>
-                        <ListItem date="22/08/2022" title="Resource 1" subtitle="Type: Patient"></ListItem>
-                        <ListItem date="22/08/2022" title="Resource 1" subtitle="Type: Patient"></ListItem>
-                        <ListItem date="22/08/2022" title="Resource 1" subtitle="Type: Patient"></ListItem>
-                        <ListItem date="22/08/2022" title="Resource 1" subtitle="Type: Patient"></ListItem> */}
                     </List>
                 </Center>
             </Wrapper>
