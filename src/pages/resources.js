@@ -25,19 +25,18 @@ export const Resources = () => {
         await web3.contract.methods.addUser(newName).send({
             from: address
         });
-        navigate('/resources');
+        window.location.reload(false);
     }, [newName]);
 
     const handleReject = () => {
         alert('You need to choose a name');
-        navigate('/resources');
+        window.location.reload(false);
     }
 
     const checkUser = useCallback(async (address) => {
         let user = await web3.contract.methods.getUser().call({
             from: address
         }).catch(error => {
-
         });
 
         if (!user.instanced) {
@@ -77,7 +76,6 @@ export const Resources = () => {
         // eslint-disable-next-line react-hooks/exhaustive-deps
 
     }, [checkUser]);
-    // addUser('jdskjdf');
 
     return (
         <>

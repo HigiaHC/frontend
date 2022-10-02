@@ -9,7 +9,7 @@ export const Header = ({ name }) => {
   return (
     <Wrapper>
       <Center>
-        <Logo src={require('../assets/logo.png').default}></Logo>
+        <Logo src={require('../assets/logo.png').default} onClick={() => navigate('/resources')}></Logo>
         <Menu>
           <MenuItem>
             <MenuIcon src={require('../assets/login.png').default}></MenuIcon>
