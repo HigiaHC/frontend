@@ -49,7 +49,7 @@ export const NewReference = () => {
         const patient = parser.parsePatient(patientData);
         const response = await fhirApi.post(`/${patient.resourceType}`, patient);
 
-        await web3.contract.methods.createReference(response.data.id, formData.name, formData.type).send({
+        await web3.contract.methods.createReference(response.data.id, formData.name, formData.type, 'self').send({
           from: wallet.getAccount()
         });
         navigate('/resources');
