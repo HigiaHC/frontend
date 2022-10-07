@@ -438,31 +438,6 @@
       "inputs": [
         {
           "internalType": "address",
-          "name": "_address",
-          "type": "address"
-        },
-        {
-          "internalType": "string",
-          "name": "_tokenString",
-          "type": "string"
-        }
-      ],
-      "name": "validateToken",
-      "outputs": [
-        {
-          "internalType": "bool",
-          "name": "",
-          "type": "bool"
-        }
-      ],
-      "stateMutability": "view",
-      "type": "function",
-      "constant": true
-    },
-    {
-      "inputs": [
-        {
-          "internalType": "address",
           "name": "_patient",
           "type": "address"
         },
@@ -32732,12 +32707,12 @@
     "5777": {
       "events": {},
       "links": {},
-      "address": "0xd8B6E38508bFa2e54cA109F5599a7F2da9701b19",
-      "transactionHash": "0x64394e9d4f8c03ee4d3933df43b7c7da4f0c9839d08b4d3d6da1c81352fbe394"
+      "address": "0xf44ac084b0F73d2d112cB6Bf9131E2d33852ace5",
+      "transactionHash": "0xe25cdbc70b5b077a42daf79c033dc3ec79ce7150757ce6a8f8f9623aaad623a7"
     }
   },
   "schemaVersion": "3.4.4",
-  "updatedAt": "2022-09-24T23:55:43.282Z",
+  "updatedAt": "2022-10-02T22:39:01.677Z",
   "devdoc": {
     "kind": "dev",
     "methods": {},

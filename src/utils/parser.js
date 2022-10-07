@@ -52,6 +52,7 @@ const Parser = {
             address
         }
     }
+
 }
 
 export default Parser;
