@@ -14,7 +14,7 @@ export const Resources = () => {
     const navigate = useNavigate();
     const [name, setName] = useState('');
     const [newName, setNewName] = useState('');
-    const [references, setReferences] = useState([]);
+    const [references, setReferences] = useState([]); 
     const [searchInput, setSearchInput] = useState("");
 
     const { web3 } = useWeb3();
@@ -40,7 +40,7 @@ export const Resources = () => {
         });
 
         if (!user.instanced) {
-            showPopup({
+            /*showPopup({
                 text1: "Creating new account!",
                 text2: "Insert account name:",
                 onAllow: () => addUser(address),
@@ -48,7 +48,10 @@ export const Resources = () => {
                 hasInput: true,
                 onChange: (value) => setNewName(value),
                 placeholder: 'Name'
-            });
+            });*/
+            navigate('/first-access');
+            addUser(address);
+            handleReject();
         }
         setName(user.name);
     }, [newName]);
@@ -67,7 +70,7 @@ export const Resources = () => {
     useEffect(() => {
         const checkWalletLogin = async () => {
             if (!await wallet.isLogged(true, web3)) {
-                navigate('/');
+                navigate('/')
             }
             checkUser(wallet.getAccount());
             loadReferences(wallet.getAccount());

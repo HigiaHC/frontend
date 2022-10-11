@@ -23,7 +23,7 @@ export const Resource = () => {
     });
 
     if (!user.instanced) {
-        navigate('/');
+        navigate('/first-access');
     }
   }, []);
 
@@ -46,7 +46,7 @@ export const Resource = () => {
   useEffect(() => {
     const checkWalletLogin = async () => {
         if (!await wallet.isLogged(true, web3)) {
-            navigate('/');
+            navigate('/first-access');
         }
         checkUser(wallet.getAccount());
         loadResource(wallet.getAccount());

@@ -14,7 +14,7 @@ import observationParser from "../utils/parserObservation";
 import fhirApi from "../services/fhir";
 import { isPatientValid } from '../utils/resources/patientValidator';
 
-export const NewReference = () => {
+export const FirstAccess = () => {
   const navigate = useNavigate();
   const [name, setName] = useState('');
   const [formData, setFormData] = useState({
@@ -32,14 +32,6 @@ export const NewReference = () => {
     gender: ""
   })
 
-  const [observationData, setobservationData] = useState({
-    subject: "",
-    issued: "",
-    interpretation: "",
-    low: "",
-    high: ""
-  })
-
   const { web3 } = useWeb3();
   const { wallet } = useWallet();
 
@@ -49,24 +41,18 @@ export const NewReference = () => {
       alert('Field cannot be empty');
       return;
     }
+    
+    if (!isPatientValid(patientData))
+        alert('something is not working');
 
-    switch (formData.type.toLowerCase()) {
-        //TODO: permitir a criação de um recurso apenas se estiver logado e não for paciente
-        case 'observation':
-          const observation = observationParser.parseObservation(observationData);
-          response = await fhirApi.post(`/${observation.resourceType}`, observation);
+    const patient = parser.parsePatient(patientData);
+    response = await fhirApi.post(`/${patient.resourceType}`, patient);
 
-          await web3.contract.methods.createReference(response.data.id, formData.name, formData.type, "self").send({
-            from: wallet.getAccount()
-          });
-          navigate('/resources');
-  
-          break;
-
-      default:
-        alert('resource type not defined');
-        break;
-    }
+    await web3.contract.methods.createReference(response.data.id, formData.name, formData.type, "self").send({
+        from: wallet.getAccount()
+    });
+    navigate('/resources');
+     
   }
 
   const checkUser = async (address) => {
@@ -83,8 +69,9 @@ export const NewReference = () => {
 
   useEffect(() => {
     const checkWalletLogin = async () => {
+      let ignore = false;
       if (!await wallet.isLogged(true, web3)) {
-        navigate('/');
+        navigate('/first-access');
       }
       checkUser(wallet.getAccount());
     }
@@ -97,18 +84,16 @@ export const NewReference = () => {
       <Header name={name}></Header>
       <Wrapper>
         <Center>
-          <Input placeholder="Name" value={formData.name} onChange={(e) => setFormData(prev => ({ ...prev, name: e }))}></Input>
-          {<StyledSelect placeholder="Select Resource type..." options={[
-            { value: 'Observation', label: 'Observation' }
-          ]} onChange={({ value }) => setFormData(prev => ({ ...prev, type: value }))} />}
-          <hr></hr>
-          {formData.type === 'Observation' && <>
-            <Input placeholder="Subject" value={observationData.subject} onChange={(e) => setobservationData(prev => ({ ...prev, subject: e }))}></Input>
-            <Input placeholder="Issued (yyyy-MM-dd HH:mm)" value={observationData.issued} onChange={(e) => setobservationData(prev => ({ ...prev, issued: e }))} mask={hourMask}></Input>
-            <Input placeholder="Reference Range (Lowest in mmol/l)" value={observationData.low} onChange={(e) => setobservationData(prev => ({ ...prev, low: e }))}></Input>
-            <Input placeholder="Reference Range (Highest in mmol/l)" value={observationData.high} onChange={(e) => setobservationData(prev => ({ ...prev, high: e }))}></Input>           
-            <Input placeholder="Interpretation" value={observationData.interpretation} onChange={(e) => setobservationData(prev => ({ ...prev, interpretation: e }))}></Input>           
-          </>}
+          <Input placeholder="Name" value={formData.name} onChange={(e) => setFormData(prev => ({ ...prev, name: e }))}></Input>         
+            <Input placeholder="Email" value={patientData.email} onChange={(e) => setPatientData(prev => ({ ...prev, email: e }))}></Input>
+            <Input placeholder="Phone" value={patientData.phone} onChange={(e) => setPatientData(prev => ({ ...prev, phone: e }))} mask={phoneMask}></Input>
+            <Input placeholder="Address" value={patientData.address} onChange={(e) => setPatientData(prev => ({ ...prev, address: e }))}></Input>
+            <Input placeholder="Birth Date" value={patientData.birthDate} onChange={(e) => setPatientData(prev => ({ ...prev, birthDate: e }))} mask={dateMask}></Input>
+            <StyledSelect placeholder="Select gender..." options={[
+              { value: 'Male', label: 'Male' },
+              { value: 'Female', label: 'Female' },
+              { value: 'Other', label: 'Other' }
+            ]} onChange={({ value }) => setPatientData(prev => ({ ...prev, gender: value }))} />         
           <ButtonWrapper>
             <Button onClick={async () => handleSubmit()} fullWidth={false}>Create Resource</Button>
           </ButtonWrapper>
