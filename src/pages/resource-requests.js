@@ -10,6 +10,10 @@ import { useWallet } from "../contexts/wallet";
 import { usePopup } from "../contexts/popup";
 import { unixToDate } from "../utils/date";
 import api from "../services/api";
+import parser from "../utils/parser";
+import observationParser from "../utils/parserObservation";
+import fhirApi from "../services/fhir";
+import { isPatientValid } from '../utils/resources/patientValidator';
 const uuid = require('uuid');
 
 export const ResourceRequests = () => {
@@ -60,22 +64,60 @@ export const ResourceRequests = () => {
         navigate('/resource-requests');
     }
 
-    const handleAccept = async (id, description, type, from) => {
+    const handleAccept = async (id, description, type, from, fields) => {
         api.post(`resources/requests/created/${id}`);
 
-        await web3.contract.methods.createReference(uuid.v4(), description, type, from).send({
-            from: wallet.getAccount()
-        });
+        let response;
+
+        switch (type.toLowerCase()) {
+            case 'patient':
+                if (!isPatientValid(fields))
+                    alert('something is not working');
+
+                const patient = parser.parsePatient(fields);
+                response = await fhirApi.post(`/${type}`, patient);
+                await web3.contract.methods.createReference(response.data.id, description, type, from).send({
+                    from: wallet.getAccount()
+                });
+                navigate('/resources');
+                break;
+            case 'observation':
+                const observation = observationParser.parseObservation(fields);
+                response = await fhirApi.post(`/${observation.resourceType}`, observation);
+
+                await web3.contract.methods.createReference(response.data.id, description, type, from).send({
+                    from: wallet.getAccount()
+                });
+                navigate('/resources');
+
+                break;
+
+            case 'diagnostic':
+                const dignostic = parser.parseDiagnostic(fields);
+                response = await fhirApi.post(`/${dignostic.resourceType}`, dignostic);
+
+                await web3.contract.methods.createReference(response.data.id, description, type, from).send({
+                    from: wallet.getAccount()
+                });
+                navigate('/resources');
+
+                break;
+
+            default:
+                alert('resource type not defined');
+                break;
+
+        }
 
         handleHide();
         navigate('/resource-requests');
     }
 
-    const openAnswerPopup = (id, name, description, type) => {
+    const openAnswerPopup = (id, name, description, fields, type) => {
         showPopup({
             text1: `${name} wants to create a resource for you`,
             text2: "Do you allow?",
-            onAllow: () => handleAccept(id, description, type, name),
+            onAllow: () => handleAccept(id, description, type, name, fields),
             onReject: () => handleReject(id),
             hasInput: false
         });
@@ -102,6 +144,7 @@ export const ResourceRequests = () => {
                                     request.id,
                                     request.from,
                                     request.description,
+                                    request.fields,
                                     request.type
                                 )}></ListItem>
                         )}
