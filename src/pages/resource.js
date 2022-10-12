@@ -46,7 +46,7 @@ export const Resource = () => {
   useEffect(() => {
     const checkWalletLogin = async () => {
         if (!await wallet.isLogged(true, web3)) {
-            navigate('/first-access');
+            navigate('/');
         }
         checkUser(wallet.getAccount());
         loadResource(wallet.getAccount());

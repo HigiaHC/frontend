@@ -38,9 +38,8 @@ const Parser = {
                 use: "home",
                 type: "both",
                 text: data.address,
-
             }
-        ]
+        ];
 
         return {
             resourceType,

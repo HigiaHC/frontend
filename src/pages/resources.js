@@ -19,19 +19,8 @@ export const Resources = () => {
 
     const { web3 } = useWeb3();
     const { wallet } = useWallet();
-    const { showPopup, handleHide } = usePopup();
 
-    const addUser = useCallback(async (address) => {
-        await web3.contract.methods.addUser(newName).send({
-            from: address
-        });
-        window.location.reload(false);
-    }, [newName]);
-
-    const handleReject = () => {
-        alert('You need to choose a name');
-        window.location.reload(false);
-    }
+    
 
     const checkUser = useCallback(async (address) => {
         let user = await web3.contract.methods.getUser().call({
@@ -40,18 +29,8 @@ export const Resources = () => {
         });
 
         if (!user.instanced) {
-            /*showPopup({
-                text1: "Creating new account!",
-                text2: "Insert account name:",
-                onAllow: () => addUser(address),
-                onReject: () => handleReject(),
-                hasInput: true,
-                onChange: (value) => setNewName(value),
-                placeholder: 'Name'
-            });*/
-            navigate('/first-access');
-            addUser(address);
-            handleReject();
+            alert('You need to choose a name');
+            navigate('/first-access');  
         }
         setName(user.name);
     }, [newName]);

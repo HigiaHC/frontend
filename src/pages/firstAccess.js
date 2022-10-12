@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useCallback, useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import Select from 'react-select';
 import ReactJson from "react-json-view";
@@ -16,11 +16,12 @@ import { isPatientValid } from '../utils/resources/patientValidator';
 
 export const FirstAccess = () => {
   const navigate = useNavigate();
-  const [name, setName] = useState('');
   const [formData, setFormData] = useState({
     name: "",
     type: ""
   })
+  const [name, setName] = useState('');
+  const [newName, setNewName] = useState('');
 
   const [patientData, setPatientData] = useState({
     name: "",
@@ -48,7 +49,7 @@ export const FirstAccess = () => {
     const patient = parser.parsePatient(patientData);
     response = await fhirApi.post(`/${patient.resourceType}`, patient);
 
-    await web3.contract.methods.createReference(response.data.id, formData.name, formData.type, "self").send({
+    await web3.contract.methods.addUser(response.data.id, formData.name).send({
         from: wallet.getAccount()
     });
     navigate('/resources');
@@ -60,18 +61,15 @@ export const FirstAccess = () => {
       from: address
     });
 
-    if (!user.instanced) {
-      navigate('/first-access');
-    }
-    setName(user.name);
-    setPatientData(prev => ({ ...prev, name: user.name }))
+    if (user.instanced) {
+      //navigate('/resources');
+    }   
   }
 
   useEffect(() => {
     const checkWalletLogin = async () => {
-      let ignore = false;
       if (!await wallet.isLogged(true, web3)) {
-        navigate('/first-access');
+        navigate('/');
       }
       checkUser(wallet.getAccount());
     }
