@@ -62,7 +62,8 @@ export const FirstAccess = () => {
     });
 
     if (user.instanced) {
-      //navigate('/resources');
+      alert('You already have an account!');
+      navigate('/resources');
     }   
   }
 
@@ -79,7 +80,7 @@ export const FirstAccess = () => {
 
   return (
     <>
-      <Header name={name}></Header>
+      <Header name={name} hideElements={true}></Header>
       <Wrapper>
         <Center>
           <Input placeholder="Name" value={formData.name} onChange={(e) => setFormData(prev => ({ ...prev, name: e }))}></Input>         

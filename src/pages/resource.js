@@ -11,7 +11,6 @@ import fhirApi from "../services/fhir";
 export const Resource = () => {
   const navigate = useNavigate();
   const params = useParams();
-
   const [content, setContent] = useState({});
 
   const { web3 } = useWeb3();
