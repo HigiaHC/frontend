@@ -110,6 +110,16 @@ export const ResourceRequests = () => {
                 navigate('/resources');
 
                 break;
+            case 'medicationrequest':
+                //TODO: VALIDATE MEDICATION REQUEST
+                response = await fhirApi.post(`/${type}`, resource);
+
+                await web3.contract.methods.createReference(response.data.id, description, type, from).send({
+                    from: wallet.getAccount()
+                });
+                navigate('/resources');
+
+                break;
 
             default:
                 alert('resource type not defined');
