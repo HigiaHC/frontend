@@ -38,7 +38,7 @@ export const FirstAccess = () => {
 
   const handleSubmit = async () => {
     var response = null;
-    if (formData.name === "") {
+    if (patientData.name === "") {
       alert('Field cannot be empty');
       return;
     }
@@ -49,7 +49,7 @@ export const FirstAccess = () => {
     const patient = parser.parsePatient(patientData);
     response = await fhirApi.post(`/${patient.resourceType}`, patient);
 
-    await web3.contract.methods.addUser(response.data.id, formData.name).send({
+    await web3.contract.methods.addUser(response.data.id, patientData.name).send({
         from: wallet.getAccount()
     });
     navigate('/resources');
@@ -83,7 +83,7 @@ export const FirstAccess = () => {
       <Header name={name} hideElements={true}></Header>
       <Wrapper>
         <Center>
-          <Input placeholder="Name" value={formData.name} onChange={(e) => setFormData(prev => ({ ...prev, name: e }))}></Input>         
+          <Input placeholder="Name" value={patientData.name} onChange={(e) => setPatientData(prev => ({ ...prev, name: e }))}></Input>         
             <Input placeholder="Email" value={patientData.email} onChange={(e) => setPatientData(prev => ({ ...prev, email: e }))}></Input>
             <Input placeholder="Phone" value={patientData.phone} onChange={(e) => setPatientData(prev => ({ ...prev, phone: e }))} mask={phoneMask}></Input>
             <Input placeholder="Address" value={patientData.address} onChange={(e) => setPatientData(prev => ({ ...prev, address: e }))}></Input>
