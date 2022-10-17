@@ -92,7 +92,7 @@ export const ResourceRequests = () => {
 
                 break;
 
-            case 'diagnostic':
+            case 'diagnosticreport':
                 const dignostic = parser.parseDiagnostic(fields);
                 response = await fhirApi.post(`/${dignostic.resourceType}`, dignostic);
 
