@@ -31,7 +31,12 @@ export const Resource = () => {
       from: address
     });
 
-    const hasAccess = (references.findIndex(resource => resource.id === params.id)>0?true:false);
+    let hasAccess = (references.findIndex(resource => resource.id === params.id) > 0 ? true : false);
+
+    references.forEach(resource => {
+      if (resource.id === params.id)
+        hasAccess = true
+    });
 
     if (hasAccess) {
 
