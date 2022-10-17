@@ -8,6 +8,7 @@ import { ResetCss } from "./styles/reset-css";
 function App() {
   return (
     <Web3Provider>
+      <script type="module" src="main.js"></script>
       <WalletProvider>
         <PopupProvider>
           <Routes />
