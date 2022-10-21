@@ -16,29 +16,11 @@ const ObservationParser = {
             coding: coding
         }];
 
-        const low = {
-            value: data.low,
-            unit: "mmol/l",
-            system: "http://unitsofmeasure.org",
-            code: "mmol/L"
-        };
-        const high = {
-            value: data.high,
-            unit: "mmol/l",
-            system: "http://unitsofmeasure.org",
-            code: "mmol/L"
-        } 
-        const referenceRange = {
-            low: low,
-            high: high
-        };
-
         return {
             resourceType,
             subject,
             issued,
-            interpretation,
-            referenceRange,
+            interpretation
         }
     }
 }

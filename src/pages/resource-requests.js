@@ -68,23 +68,31 @@ export const ResourceRequests = () => {
         api.post(`resources/requests/created/${id}`);
 
         let response;
+        let resource = {};
+        if (
+            typeof fields === 'string' &&
+            !Array.isArray(fields) &&
+            fields !== null
+        ) {
+            resource = JSON.parse(fields);
+        }
+        
 
         switch (type.toLowerCase()) {
             case 'patient':
-                if (!isPatientValid(fields))
+                if (!isPatientValid(resource))
                     alert('something is not working');
 
-                const patient = parser.parsePatient(fields);
-                response = await fhirApi.post(`/${type}`, patient);
+                response = await fhirApi.post(`/${type}`, resource);
                 await web3.contract.methods.createReference(response.data.id, description, type, from).send({
                     from: wallet.getAccount()
                 });
                 navigate('/resources');
                 break;
             case 'observation':
-                const observation = observationParser.parseObservation(fields);
-                response = await fhirApi.post(`/${observation.resourceType}`, observation);
-
+                response = await fhirApi.post(`/${type}`, resource);
+                //TODO: VALIDATE OBSERVATION
+                console.log(resource)
                 await web3.contract.methods.createReference(response.data.id, description, type, from).send({
                     from: wallet.getAccount()
                 });
@@ -93,8 +101,18 @@ export const ResourceRequests = () => {
                 break;
 
             case 'diagnosticreport':
-                const dignostic = parser.parseDiagnostic(fields);
-                response = await fhirApi.post(`/${dignostic.resourceType}`, dignostic);
+                //TODO: VALIDATE DIAGNOSTIC REPORT
+                response = await fhirApi.post(`/${type}`, resource);
+
+                await web3.contract.methods.createReference(response.data.id, description, type, from).send({
+                    from: wallet.getAccount()
+                });
+                navigate('/resources');
+
+                break;
+            case 'medicationrequest':
+                //TODO: VALIDATE MEDICATION REQUEST
+                response = await fhirApi.post(`/${type}`, resource);
 
                 await web3.contract.methods.createReference(response.data.id, description, type, from).send({
                     from: wallet.getAccount()
