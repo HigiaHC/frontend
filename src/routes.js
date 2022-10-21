@@ -9,6 +9,7 @@ import { Resource } from './pages/resource';
 import { NewReference } from './pages/new-reference';
 import { Requests } from './pages/requests';
 import { ResourceRequests } from './pages/resource-requests';
+import { FirstAccess } from './pages/firstAccess';
 
 export const Routes = () => (
     <BrowserRouter basename="/">
@@ -21,6 +22,7 @@ export const Routes = () => (
             <Route path="/ind" element={<Individual />} />
             <Route path="/requests" element={<Requests />} />
             <Route path="/resource-requests" element={<ResourceRequests />} />
+            <Route path="/first-access" element={<FirstAccess />} />
         </Switch>
     </BrowserRouter>
 );

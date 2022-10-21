@@ -11,7 +11,6 @@ import fhirApi from "../services/fhir";
 export const Resource = () => {
   const navigate = useNavigate();
   const params = useParams();
-
   const [content, setContent] = useState({});
 
   const { web3 } = useWeb3();
@@ -23,7 +22,7 @@ export const Resource = () => {
     });
 
     if (!user.instanced) {
-        navigate('/');
+        navigate('/first-access');
     }
   }, []);
 
@@ -32,7 +31,12 @@ export const Resource = () => {
       from: address
     });
 
-    const hasAccess = (references.findIndex(resource => resource.id === params.id)>0?true:false);
+    let hasAccess = (references.findIndex(resource => resource.id === params.id) > 0 ? true : false);
+
+    references.forEach(resource => {
+      if (resource.id === params.id)
+        hasAccess = true
+    });
 
     if (hasAccess) {
 

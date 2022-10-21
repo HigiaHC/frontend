@@ -6,18 +6,20 @@ import styled from "styled-components";
 import { Button } from "../components/button";
 import { Header } from "../components/header";
 import { Input } from "../components/input";
-import { dateMask, phoneMask } from "../utils/mask";
+import { dateMask, hourMask, phoneMask } from "../utils/mask";
 import { useWeb3 } from "../contexts/web3";
 import { useWallet } from "../contexts/wallet";
-import parser from "../utils/parser"
+import parser from "../utils/parser";
+import observationParser from "../utils/parserObservation";
 import fhirApi from "../services/fhir";
+import { isPatientValid } from '../utils/resources/patientValidator';
 
 export const NewReference = () => {
   const navigate = useNavigate();
   const [name, setName] = useState('');
   const [formData, setFormData] = useState({
     name: "",
-    type: "Patient"
+    type: ""
   })
 
   const [patientData, setPatientData] = useState({
@@ -30,26 +32,40 @@ export const NewReference = () => {
     gender: ""
   })
 
+  const [observationData, setobservationData] = useState({
+    subject: "",
+    issued: "",
+    interpretation: "",
+    low: "",
+    high: ""
+  })
+
   const { web3 } = useWeb3();
   const { wallet } = useWallet();
 
   const handleSubmit = async () => {
-
+    var response = null;
     if (formData.name === "") {
       alert('Field cannot be empty');
       return;
     }
 
-    console.log(wallet.getAccount())
-    if (formData.type === 'Patient') {
-      const patient = parser.parsePatient(patientData);
+    switch (formData.type.toLowerCase()) {
+        //TODO: permitir a criação de um recurso apenas se estiver logado e não for paciente
+        case 'observation':
+          const observation = observationParser.parseObservation(observationData);
+          response = await fhirApi.post(`/${observation.resourceType}`, observation);
 
-      const response = await fhirApi.post(`/${patient.resourceType}`, patient);
+          await web3.contract.methods.createReference(response.data.id, formData.name, formData.type, "self").send({
+            from: wallet.getAccount()
+          });
+          navigate('/resources');
   
-      await web3.contract.methods.createReference(response.data.id, formData.name, formData.type).send({
-        from: wallet.getAccount()
-      });
-      navigate('/resources');
+          break;
+
+      default:
+        alert('resource type not defined');
+        break;
     }
   }
 
@@ -58,10 +74,8 @@ export const NewReference = () => {
       from: address
     });
 
-    // console.log(user);
-
     if (!user.instanced) {
-      navigate('/');
+      navigate('/first-access');
     }
     setName(user.name);
     setPatientData(prev => ({ ...prev, name: user.name }))
@@ -83,26 +97,17 @@ export const NewReference = () => {
       <Header name={name}></Header>
       <Wrapper>
         <Center>
-          <Input placeholder="Resource Name" value={formData.name} onChange={(e) => setFormData(prev => ({ ...prev, name: e }))}></Input>
-          {/* <SelectWrapper>
-            <Select placeholder="Select Resource type..." options={[
-              { value: 'Patient', label: 'Patient' },
-              { value: 'Observation', label: 'Observation' }
-            ]} onChange={({ value }) => setFormData(prev => ({ ...prev, type: value }))} />
-          </SelectWrapper> */}
+          <Input placeholder="Name" value={formData.name} onChange={(e) => setFormData(prev => ({ ...prev, name: e }))}></Input>
+          {<StyledSelect placeholder="Select Resource type..." options={[
+            { value: 'Observation', label: 'Observation' }
+          ]} onChange={({ value }) => setFormData(prev => ({ ...prev, type: value }))} />}
           <hr></hr>
-          {formData.type === 'Patient' && <>
-            <Input placeholder="Email" value={patientData.email} onChange={(e) => setPatientData(prev => ({ ...prev, email: e }))}></Input>
-            <Input placeholder="Phone" value={patientData.phone} onChange={(e) => setPatientData(prev => ({ ...prev, phone: e }))} mask={phoneMask}></Input>
-            <Input placeholder="Address" value={patientData.address} onChange={(e) => setPatientData(prev => ({ ...prev, address: e }))}></Input>
-            <Input placeholder="Birth Date" value={patientData.birthDate} onChange={(e) => setPatientData(prev => ({ ...prev, birthDate: e }))} mask={dateMask}></Input>
-            {/* <SelectWrapper>
-              <Select placeholder="Select gender..." options={[
-                { value: 'Male', label: 'Male' },
-                { value: 'Female', label: 'Female' },
-                { value: 'Other', label: 'Other' }
-              ]} onChange={({ value }) => setPatientData(prev => ({ ...prev, gender: value }))} />
-            </SelectWrapper> */}
+          {formData.type === 'Observation' && <>
+            <Input placeholder="Subject" value={observationData.subject} onChange={(e) => setobservationData(prev => ({ ...prev, subject: e }))}></Input>
+            <Input placeholder="Issued (yyyy-MM-dd HH:mm)" value={observationData.issued} onChange={(e) => setobservationData(prev => ({ ...prev, issued: e }))} mask={hourMask}></Input>
+            <Input placeholder="Reference Range (Lowest in mmol/l)" value={observationData.low} onChange={(e) => setobservationData(prev => ({ ...prev, low: e }))}></Input>
+            <Input placeholder="Reference Range (Highest in mmol/l)" value={observationData.high} onChange={(e) => setobservationData(prev => ({ ...prev, high: e }))}></Input>           
+            <Input placeholder="Interpretation" value={observationData.interpretation} onChange={(e) => setobservationData(prev => ({ ...prev, interpretation: e }))}></Input>           
           </>}
           <ButtonWrapper>
             <Button onClick={async () => handleSubmit()} fullWidth={false}>Create Resource</Button>
@@ -113,17 +118,14 @@ export const NewReference = () => {
   )
 }
 
-const SelectWrapper = styled.div`
-  &${Select} {
-    width: 400px;
-    height: 32px;
+const StyledSelect = styled(Select)`
+  width: 400px;
+  height: 32px;
 
-  
-    color: #000000;
-    font-weight: 400;
-  }
+
+  color: #000000;
+  font-weight: 400;
 `
-
 
 const Wrapper = styled.div`
   width: 100%;

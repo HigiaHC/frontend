@@ -1,7 +1,7 @@
 const Parser = {
 
 
-    parsePatient: (data) =>  {
+    parsePatient: (data) => {
         const resourceType = 'Patient';
 
         const active = data.active;
@@ -32,15 +32,14 @@ const Parser = {
                 rank: 2
             }
         ];
-        
+
         const address = [
             {
                 use: "home",
                 type: "both",
                 text: data.address,
-
             }
-        ]
+        ];
 
         return {
             resourceType,
@@ -51,7 +50,30 @@ const Parser = {
             telecom,
             address
         }
+    },
+
+    parseDiagnostic: (data) => {
+        const resourceType = 'DiagnosticReport';
+
+        const active = data.active;
+
+        const subject = {
+            display: data.subject
+        };
+
+        const issued = data.issued;//.replace(" ", "T").concat(":00+00:00");
+
+        const conclusion = data.acticonclusionve;
+
+        return {
+            resourceType,
+            active,
+            subject,
+            issued,
+            conclusion
+        }
     }
+
 }
 
 export default Parser;

@@ -31,3 +31,4 @@ export const mask = (mask) => (currentValueRaw) => {
 
 export const phoneMask = mask('** * ****-****')
 export const dateMask = mask('**/**/****')
+export const hourMask = mask('****-**-** **:**')

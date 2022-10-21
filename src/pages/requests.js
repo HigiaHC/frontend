@@ -66,6 +66,7 @@ export const Requests = () => {
 
     const handleAccept = async (id) => {
         let token = uuid.v4();
+        console.log(token);
         api.post('requests/answer', {
             id: id,
             answer: true,

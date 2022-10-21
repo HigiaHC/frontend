@@ -10,6 +10,10 @@ import { useWallet } from "../contexts/wallet";
 import { usePopup } from "../contexts/popup";
 import { unixToDate } from "../utils/date";
 import api from "../services/api";
+import parser from "../utils/parser";
+import observationParser from "../utils/parserObservation";
+import fhirApi from "../services/fhir";
+import { isPatientValid } from '../utils/resources/patientValidator';
 const uuid = require('uuid');
 
 export const ResourceRequests = () => {
@@ -60,22 +64,78 @@ export const ResourceRequests = () => {
         navigate('/resource-requests');
     }
 
-    const handleAccept = async (id, description, type, from) => {
+    const handleAccept = async (id, description, type, from, fields) => {
         api.post(`resources/requests/created/${id}`);
 
-        await web3.contract.methods.createReference(uuid.v4(), description, type, from).send({
-            from: wallet.getAccount()
-        });
+        let response;
+        let resource = {};
+        if (
+            typeof fields === 'string' &&
+            !Array.isArray(fields) &&
+            fields !== null
+        ) {
+            resource = JSON.parse(fields);
+        }
+        
+
+        switch (type.toLowerCase()) {
+            case 'patient':
+                if (!isPatientValid(resource))
+                    alert('something is not working');
+
+                response = await fhirApi.post(`/${type}`, resource);
+                await web3.contract.methods.createReference(response.data.id, description, type, from).send({
+                    from: wallet.getAccount()
+                });
+                navigate('/resources');
+                break;
+            case 'observation':
+                response = await fhirApi.post(`/${type}`, resource);
+                //TODO: VALIDATE OBSERVATION
+                console.log(resource)
+                await web3.contract.methods.createReference(response.data.id, description, type, from).send({
+                    from: wallet.getAccount()
+                });
+                navigate('/resources');
+
+                break;
+
+            case 'diagnosticreport':
+                //TODO: VALIDATE DIAGNOSTIC REPORT
+                response = await fhirApi.post(`/${type}`, resource);
+
+                await web3.contract.methods.createReference(response.data.id, description, type, from).send({
+                    from: wallet.getAccount()
+                });
+                navigate('/resources');
+
+                break;
+            case 'medicationrequest':
+                //TODO: VALIDATE MEDICATION REQUEST
+                response = await fhirApi.post(`/${type}`, resource);
+
+                await web3.contract.methods.createReference(response.data.id, description, type, from).send({
+                    from: wallet.getAccount()
+                });
+                navigate('/resources');
+
+                break;
+
+            default:
+                alert('resource type not defined');
+                break;
+
+        }
 
         handleHide();
         navigate('/resource-requests');
     }
 
-    const openAnswerPopup = (id, name, description, type) => {
+    const openAnswerPopup = (id, name, description, fields, type) => {
         showPopup({
             text1: `${name} wants to create a resource for you`,
             text2: "Do you allow?",
-            onAllow: () => handleAccept(id, description, type, name),
+            onAllow: () => handleAccept(id, description, type, name, fields),
             onReject: () => handleReject(id),
             hasInput: false
         });
@@ -102,6 +162,7 @@ export const ResourceRequests = () => {
                                     request.id,
                                     request.from,
                                     request.description,
+                                    request.fields,
                                     request.type
                                 )}></ListItem>
                         )}

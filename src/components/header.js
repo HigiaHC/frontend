@@ -3,21 +3,25 @@ import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
 import { Button } from "./button";
 
-export const Header = ({ name }) => {
+export const Header = ({ name, hideElements = false}) => {
   const navigate = useNavigate();
 
   return (
     <Wrapper>
       <Center>
-        <Logo src={require('../assets/logo.png').default}></Logo>
-        <Menu>
-          <MenuItem>
-            <MenuIcon src={require('../assets/login.png').default}></MenuIcon>
-            {name}
-          </MenuItem>
-          <Button fullWidth={false} onClick={() => navigate('/requests')}>Sharing Requests</Button>
-          <Button fullWidth={false} onClick={() => navigate('/resource-requests')}>Resource Requests</Button>
-        </Menu>
+        <Logo src={require('../assets/logo.png').default} onClick={() => navigate('/resources')}></Logo>
+        {hideElements === false && 
+        <>
+          <Menu>
+            <MenuItem>
+              <MenuIcon src={require('../assets/login.png').default}></MenuIcon>
+              {name}
+            </MenuItem>
+            <Button fullWidth={false} onClick={() => navigate('/requests')}>Sharing Requests</Button>
+            <Button fullWidth={false} onClick={() => navigate('/resource-requests')}>Resource Requests</Button>
+          </Menu>
+        </>
+        }
       </Center>
     </Wrapper>
   )
