@@ -16,6 +16,7 @@ export const Resources = () => {
     const [newName, setNewName] = useState('');
     const [references, setReferences] = useState([]); 
     const [searchInput, setSearchInput] = useState("");
+    const [patientId, setPatientId] = useState('');
 
     const { web3 } = useWeb3();
     const { wallet } = useWallet();
@@ -39,6 +40,7 @@ export const Resources = () => {
         let references = await web3.contract.methods.listReferences().call({
             from: address
         });
+        setPatientId(references[0].id);
         setReferences(references);
     }
 
@@ -67,7 +69,7 @@ export const Resources = () => {
                     <Actions>
                         <Input img={require('../assets/search.png').default} placeholder="Search..."
                         onChange={event => setSearchInput(event)}/>                      
-                        <Button fullWidth={false} onClick={() => navigate('/new')}>Create Resource</Button>
+                        <Button fullWidth={false} onClick={() => navigate('/new', {state: {patientId: patientId}})}>Create Resource</Button>
                     </Actions>
                     <List>
                         {references.filter(reference =>{
