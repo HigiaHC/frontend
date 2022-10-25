@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import Select from 'react-select';
 import ReactJson from "react-json-view";
 import styled from "styled-components";
@@ -16,6 +16,7 @@ import { isPatientValid } from '../utils/resources/patientValidator';
 
 export const NewReference = () => {
   const navigate = useNavigate();
+  const location = useLocation();
   const [name, setName] = useState('');
   const [formData, setFormData] = useState({
     name: "",
@@ -32,12 +33,21 @@ export const NewReference = () => {
     gender: ""
   })
 
-  const [observationData, setobservationData] = useState({
-    subject: "",
+  const [observationData, setObservationData] = useState({
+    code: {
+      text: ""
+    },
+    performer: {
+      display: ""
+    },
+    subject: {
+      reference: ""
+    },
     issued: "",
-    interpretation: "",
-    low: "",
-    high: ""
+    note: [{text: ""}],
+    interpretation: {
+      text: ""
+    },
   })
 
   const { web3 } = useWeb3();
@@ -51,10 +61,12 @@ export const NewReference = () => {
     }
 
     switch (formData.type.toLowerCase()) {
-        //TODO: permitir a criação de um recurso apenas se estiver logado e não for paciente
         case 'observation':
-          const observation = observationParser.parseObservation(observationData);
-          response = await fhirApi.post(`/${observation.resourceType}`, observation);
+          observationData.subject.reference = `Patient/${location.state.patientId}`;
+          observationData.issued = new Date().toISOString().slice(0, 18);
+          observationData.performer.display = patientData.name;
+
+          response = await fhirApi.post('/Observation', observationData);
 
           await web3.contract.methods.createReference(response.data.id, formData.name, formData.type, "self").send({
             from: wallet.getAccount()
@@ -103,11 +115,9 @@ export const NewReference = () => {
           ]} onChange={({ value }) => setFormData(prev => ({ ...prev, type: value }))} />}
           <hr></hr>
           {formData.type === 'Observation' && <>
-            <Input placeholder="Subject" value={observationData.subject} onChange={(e) => setobservationData(prev => ({ ...prev, subject: e }))}></Input>
-            <Input placeholder="Issued (yyyy-MM-dd HH:mm)" value={observationData.issued} onChange={(e) => setobservationData(prev => ({ ...prev, issued: e }))} mask={hourMask}></Input>
-            <Input placeholder="Reference Range (Lowest in mmol/l)" value={observationData.low} onChange={(e) => setobservationData(prev => ({ ...prev, low: e }))}></Input>
-            <Input placeholder="Reference Range (Highest in mmol/l)" value={observationData.high} onChange={(e) => setobservationData(prev => ({ ...prev, high: e }))}></Input>           
-            <Input placeholder="Interpretation" value={observationData.interpretation} onChange={(e) => setobservationData(prev => ({ ...prev, interpretation: e }))}></Input>           
+            <Input placeholder="Symptons" value={observationData.code.text} onChange={(e) => setObservationData(prev => ({ ...prev, code: { text: e } }))}></Input>
+            <Input placeholder="Note" value={observationData.note[0].text} onChange={(e) => setObservationData(prev => ({ ...prev, note: [{text: e}] }))}></Input>
+            <Input placeholder="Interpretation" value={observationData.interpretation.text} onChange={(e) => setObservationData(prev => ({ ...prev, interpretation: {text: e} }))}></Input> 
           </>}
           <ButtonWrapper>
             <Button onClick={async () => handleSubmit()} fullWidth={false}>Create Resource</Button>
