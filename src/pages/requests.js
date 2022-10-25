@@ -105,7 +105,7 @@ export const Requests = () => {
                         {requests.map(request =>
                             <ListItem
                                 key={request.id}
-                                side={`Situation: ${request.accepted}`}
+                                side={`Situation: Waiting`}
                                 title={request.description}
                                 subtitle={`From: ${request.name}`}
                                 onClick={() => openAnswerPopup(request.id, request.name)}></ListItem>

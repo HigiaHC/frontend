@@ -41,6 +41,7 @@ export const Resource = () => {
     if (hasAccess) {
 
       const response = await fhirApi.get(`/${params.type}/${params.id}`);
+      console.log(response.data)
       if (response.data !== undefined) {
         setContent(response.data);
       }
